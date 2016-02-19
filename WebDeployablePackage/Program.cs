@@ -55,38 +55,5 @@ namespace WebDeployablePackage
         {
             Console.WriteLine(e.Message);
         }
-
-        public static void SyncWithAddedParameters()
-        {
-            DeploymentSyncOptions syncOptions = new DeploymentSyncOptions();
-            DeploymentBaseOptions sourceBaseOptions = new DeploymentBaseOptions();
-            DeploymentBaseOptions destBaseOptions = new DeploymentBaseOptions();
-            DeploymentProviderOptions destProviderOptions =
-                new DeploymentProviderOptions(DeploymentWellKnownProvider.Auto);
-
-            using (DeploymentObject sourceObj =
-                DeploymentManager.CreateObject(
-                    DeploymentWellKnownProvider.Manifest, @"C:\SourceManifest.xml", sourceBaseOptions))
-            {
-                DeploymentSyncParameter parameter = new DeploymentSyncParameter(
-                    "TestParam",              // Name
-                    "TestParam Description",  // Description
-                    "destApp",                // Default Value to set
-                    null);                    // Tag
-
-                DeploymentSyncParameterEntry entry = new DeploymentSyncParameterEntry(
-                    DeploymentSyncParameterEntryKind.ProviderPath,      // Kind
-                    DeploymentWellKnownProvider.ContentPath.ToString(), // Scope
-                    ".*",                                               // Match
-                    null);                                              // Tag
-
-                parameter.Add(entry);
-                sourceObj.SyncParameters.Add(parameter);
-
-                sourceObj.SyncTo(destProviderOptions, destBaseOptions, syncOptions);
-            }
-
-        }
-
     }
 }
